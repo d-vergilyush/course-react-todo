@@ -37,7 +37,15 @@ export default class App extends Component {
     });
   };
 
+  toggleProperty(id, prop, items) {
+    return items.map(item => (item.id === id) ?
+        { ...item, [prop]: !item[prop] } :
+        item
+    );
+  };
+
   addItem = (text) => {
+
     const newItem = this.createTodoItem(text);
 
     this.setState(({todoData}) => {
@@ -50,19 +58,30 @@ export default class App extends Component {
   };
 
   onToggleImportant = (id) => {
-    console.log('Toggle Important', id)
+    this.setState(({todoData}) => {
+      return {
+        todoData: this.toggleProperty(id, 'important', todoData)
+      }
+    })
   };
 
   onToggleDone = (id) => {
-    console.log('Toggle Done', id)
+    this.setState(({todoData}) => {
+      return {
+        todoData: this.toggleProperty(id, 'done', todoData)
+      }
+    })
   };
 
   render() {
-    const { todoData } = this.state;  
+    const { todoData } = this.state;
+
+    const doneCount = todoData.filter((item) => item.done).length;
+    const todoCount = todoData.length - doneCount;
 
     return (
       <div className="todo-app">
-        <AppHeader toDo={1} done={3} />
+        <AppHeader toDo={todoCount} done={doneCount} />
         <div className="top-panel d-flex">
           <SearchPanel />
           <ItemStatusFilter />
