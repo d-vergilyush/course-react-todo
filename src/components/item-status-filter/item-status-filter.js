@@ -26,6 +26,7 @@ export default class ItemStatusFilter extends Component {
         </button>
       );
     });
+
     return <div className="btn-group">{buttons}</div>;
   }
 }
